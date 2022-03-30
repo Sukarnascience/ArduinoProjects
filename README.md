@@ -11,17 +11,17 @@
   <tr>
     <td>1</td>
     <td>IPC087</td>
-    <td></td>
+    <td>Arduino Color Sorter Project</td>
   </tr>
   <tr>
     <td>2</td>
     <td>IPC204</td>
-    <td></td>
+    <td>Water Analysis Test Using Arduino UNO IOT</td>
   </tr>
   <tr>
     <td>3</td>
     <td>IPC067</td>
-    <td></td>
+    <td>Temperature,Humidity,Smoke,Alcohol Detector Using Arduino UNO IOT</td>
   </tr>
   <tr>
     <td>4</td>
