@@ -25,6 +25,9 @@ int blueFrequency = 0;
 // IR Sensor
 #define ir 7
 
+// Buzzer
+#define buzz 11
+
 // Servo
 #define servo1 9
 #define servo2 10
@@ -50,6 +53,7 @@ void setup(){
   pinMode(s1, OUTPUT);
   pinMode(s2, OUTPUT);
   pinMode(s3, OUTPUT);
+  pinMode(buzz,OUTPUT);
   pinMode(sOut, INPUT);
   pinMode(ir, INPUT);
 
@@ -67,7 +71,7 @@ void setup(){
 
 
 void loop(){
-  if(digitalWrite(ir)){
+  if(!digitalRead(ir)){
 
     lcd.clear();
     lcd.setCursor(0,0);
@@ -115,8 +119,10 @@ void loop(){
     lcd.print("  is empty :(  ");
     collectServo.write(115);
     dropServo.write(50);
+    digitalWrite(buzz,1);
   }
   delay(500);
+  digitalWrite(buzz,0);
 }
 
 void sortColor(int red, int green, int blue){
@@ -148,10 +154,6 @@ void sortColor(int red, int green, int blue){
   else if (green<58 && green>45 && blue<40 && blue>26){
     dropServo.write(175); // Blue
   }
-  else{
-    break;
-  }
-
   delay(300);
   
   for(int i = 65; i > 29; i--) {
