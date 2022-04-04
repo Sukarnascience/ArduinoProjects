@@ -34,7 +34,7 @@
     <td><a href="#">DEMO</a></td>
   </tr>
   <tr>
-    <td>4</td>
+    <td>5</td>
     <td>IPC198</td>
     <td>Fire Alarm</td>
     <td><a href="#">DEMO</a></td>
