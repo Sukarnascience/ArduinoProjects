@@ -43,6 +43,6 @@
     <td>001</td>
     <td>PU_P1</td>
     <td>Anti Sleep Alarm For Drivers</td>
-    <td><a href="#">DEMO</a></td>
+    <td><a href="./PU_P1">DEMO</a></td>
   </tr>
 </table>
