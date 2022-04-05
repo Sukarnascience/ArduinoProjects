@@ -39,4 +39,10 @@
     <td>Fire Alarm</td>
     <td><a href="#">DEMO</a></td>
   </tr>
+  <tr>
+    <td>001</td>
+    <td>PU_P1</td>
+    <td>Anti Sleep Alarm For Drivers</td>
+    <td><a href="#">DEMO</a></td>
+  </tr>
 </table>
