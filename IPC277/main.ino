@@ -38,21 +38,10 @@ void loop(){
    pirData = digitalRead(pir);
 
    if(pirData==1){
-    if(inLDRsence<=1000){
-      stateOfdir = 1;
+    if(inLDRsence<300){
       gateState(1);
     }
-    if(outLDRsence<=1000 && stateOfdir == 1){
-      buzz();
-      gateState(0);
-      stateOfdir = 0;
-    }
-    if(outLDRsence<=1000 && stateOfdir == 0){
-      stateOfdir = 1;
-      gateState(1);
-    }
-    if(inLDRsence<=1000 && stateOfdir == 1){
-      stateOfdir = 0;
+    if(outLDRsence<300){
       buzz();
       gateState(0);
     }
@@ -61,16 +50,10 @@ void loop(){
 
 void gateState(int d1){
   if(d1==1){
-    for(int i=0;i<=90;i++){
-      gate.write(i);
-      delay(20);
-    }
+    gate.write(90);
   }
   else if(d1==0){
-    for(int i=90;i>=0;i--){
-      gate.write(i);
-      delay(20);
-    }
+    gate.write(0);
   }
   else{
     gate.write(0);
