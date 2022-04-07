@@ -40,26 +40,26 @@ void loop(){
    if(pirData==1){
     if(inLDRsence<=1000){
       stateOfdir = 1;
-      gate(1);
+      gateState(1);
     }
     if(outLDRsence<=1000 && stateOfdir == 1){
       buzz();
-      gate(0);
+      gateState(0);
       stateOfdir = 0;
     }
     if(outLDRsence<=1000 && stateOfdir == 0){
       stateOfdir = 1;
-      gate(1);
+      gateState(1);
     }
     if(inLDRsence<=1000 && stateOfdir == 1){
       stateOfdir = 0;
       buzz();
-      gate(0);
+      gateState(0);
     }
    }
 }
 
-void gate(int d1){
+void gateState(int d1){
   if(d1==1){
     for(int i=0;i<=90;i++){
       gate.write(i);
