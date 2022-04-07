@@ -43,7 +43,7 @@
     <td>6</td>
     <td>IPC277</td>
     <td>Automatic Gate Opener</td>
-    <td><a href="#">DEMO</a></td>
+    <td><a href="./IPC277">DEMO</a></td>
   </tr>
   <tr>
     <td>001</td>
