@@ -40,6 +40,12 @@
     <td><a href="#">DEMO</a></td>
   </tr>
   <tr>
+    <td>6</td>
+    <td>IPC277</td>
+    <td>Automatic Gate Opener</td>
+    <td><a href="#">DEMO</a></td>
+  </tr>
+  <tr>
     <td>001</td>
     <td>PU_P1</td>
     <td>Anti Sleep Alarm For Drivers</td>
