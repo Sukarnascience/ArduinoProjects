@@ -5,8 +5,8 @@
 #define notifyLed D0
 #define statesLed D4
 
-const char* ssid     = "LocalNetwork";
-const char* password = "sukarna jana";
+const char* ssid     = "SSID";
+const char* password = "PASSWORD";
 
 WiFiServer server(80);
 IPAddress local_IP(192, 168, 43, 30);
