@@ -1,3 +1,5 @@
+#include <I2Cdev.h>
+
 /**
  * Group Name : IPC087
  * Another    : Sukarna Jana
@@ -36,7 +38,7 @@ Servo dropServo;
 
 int freq = 0;
 int color = 0;
-LiquidCrystal_I2C lcd(0x3F,16,2);
+LiquidCrystal_I2C lcd(0x27,16,2);
 
 
 void setup(){
