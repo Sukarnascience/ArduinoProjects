@@ -29,6 +29,8 @@ void setup(){
 
   gate.attach(servo);
 
+  Serial.begin(9600);
+
   gate.write(0);
 }
 
@@ -37,11 +39,28 @@ void loop(){
    outLDRsence = analogRead(inLazer);
    pirData = digitalRead(pir);
 
+   Serial.print("Sensor Data : ");
+   Serial.print("inLDRsence : ");
+   Serial.print(inLDRsence);
+   Serial.print(" | outLDRsence : ");
+   Serial.println(outLDRsence);
+
    if(pirData==1){
-    if(inLDRsence<300){
+    if(inLDRsence>=480){
+      stateOfdir = 1;
       gateState(1);
     }
-    if(outLDRsence<300){
+    if(outLDRsence>=480 && stateOfdir == 1){
+      buzz();
+      gateState(0);
+      stateOfdir = 0;
+    }
+    if(outLDRsence>=480 && stateOfdir == 0){
+      stateOfdir = 1;
+      gateState(1);
+    }
+    if(inLDRsence>=480 && stateOfdir == 1){
+      stateOfdir = 0;
       buzz();
       gateState(0);
     }
@@ -50,13 +69,22 @@ void loop(){
 
 void gateState(int d1){
   if(d1==1){
-    gate.write(90);
+    for(int i=0;i<=90;i++){
+      gate.write(i);
+      delay(20);
+    }
+    Serial.println("Gate Open");
   }
   else if(d1==0){
-    gate.write(0);
+    for(int i=90;i>=0;i--){
+      gate.write(i);
+      delay(20);
+    }
+    Serial.println("Gate Close");
   }
   else{
     gate.write(0);
+    Serial.println("Gate Close");
   }
 }
 
