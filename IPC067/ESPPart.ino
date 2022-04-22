@@ -1,27 +1,13 @@
-/**
- * Group Name : IPC067
- * Another    : Sukarna Jana
- * Title      : Temperature,Humidity,Smoke,Alcohol Detector Using Arduino UNO IOT
- * 
- * Copyright © 2022 Sukarna jana
- */
-
-// We will use 2 pins for sending Signals
-/*
- * IN1 IN2 - DATA
- *  0   0    No Data
- *  1   0    Smoke Sence
- *  0   1    Alcohol Sence
- *  1   1    Fire Sence
- */
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
 
-#define IN1 D0
-#define IN2 D2
+#define IN1 0
+#define IN2 2
 
-const char* ssid = "SSID";
-const char* password = "Pass";
+int status = WL_IDLE_STATUS;
+
+const char* ssid = "ssid";
+const char* password = "password";
 
 void setup(){
 
