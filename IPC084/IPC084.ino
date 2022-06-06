@@ -17,6 +17,12 @@
  * Card9: 0009063484 138,19516 ==> Card ID: 25008A4C3CDF 
  */
 
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x3f,16,2);
+
+#define buzz 2
+
 String card1 = "250089F63C66";
 String card2 = "250089788256";
 String card3 = "0B002585AA01";
@@ -28,8 +34,6 @@ String card8 = "2500895DF706";
 String card9 = "25008A8097B8";
 String card10 = "25008A4C3CDF";
 
-#define buzz 2
-
 int detect[10] = {3,4,5,6,7,8,9,10,11,12};
 
 int count = 0;                                       
@@ -38,6 +42,13 @@ boolean flag = 0;
                                  
 void setup()
 {
+   lcd.begin();
+   
+   lcd.setCursor(4,0);
+   lcd.print("WELCOME");
+   lcd.setCursor(1,1);
+   lcd.print("to grp. IPC084");
+   
    Serial.begin(9600);      
    for(int i=0; i<10; i++){
     pinMode(detect[i],OUTPUT);
@@ -53,6 +64,8 @@ void setup()
    pinMode(buzz,OUTPUT);
    beep();
    delay(1000);
+   
+   lcd.clear();
 }
 void loop()
 {
@@ -72,33 +85,73 @@ void loop()
           Serial.println("No Error");
           if(card1==input){
             blinkPro(detect[0]);
+            lcd.setCursor(0,0);
+            lcd.print("Item ID:001");
+            lcd.setCursor(0,1);
+            lcd.print("Chips Added");
           }
           else if(card2==input){
             blinkPro(detect[1]);
+            lcd.setCursor(0,0);
+            lcd.print("Item ID:010");
+            lcd.setCursor(0,1);
+            lcd.print("ChokiChoki Added");
           }
           else if(card3==input){
             blinkPro(detect[2]);
+            lcd.setCursor(0,0);
+            lcd.print("Item ID:011");
+            lcd.setCursor(0,1);
+            lcd.print("Gone Mad Added");
           }
           else if(card4==input){
             blinkPro(detect[3]);
+            lcd.setCursor(0,0);
+            lcd.print("Item ID:100");
+            lcd.setCursor(0,1);
+            lcd.print("Mixture Added");
           }
           else if(card5==input){
             blinkPro(detect[4]);
+            lcd.setCursor(0,0);
+            lcd.print("Item ID:101");
+            lcd.setCursor(0,1);
+            lcd.print("A4 Papers Added");
           }
           else if(card6==input){
             blinkPro(detect[5]);
+            lcd.setCursor(0,0);
+            lcd.print("Item ID:110");
+            lcd.setCursor(0,1);
+            lcd.print("Bingo Added");
           }
           else if(card7==input){
             blinkPro(detect[6]);
+            lcd.setCursor(0,0);
+            lcd.print("  Item Out Of  ");
+            lcd.setCursor(0,1);
+            lcd.print("Stock");
+            beep();
           }
           else if(card8==input){
             blinkPro(detect[7]);
+            lcd.setCursor(0,0);
+            lcd.print("  Item Out Of  ");
+            lcd.setCursor(0,1);
+            lcd.print("Stock");
+            beep();
           }
           else if(card9==input){
             blinkPro(detect[8]);
+            lcd.setCursor(0,0);
+            lcd.print("  Invalid Item  ");
+            beep();
           }
           else if(card10==input){
             blinkPro(detect[9]);
+            lcd.setCursor(0,0);
+            lcd.print("  Invalid Item  ");
+            beep();
           }
           else{
             beep();
@@ -109,6 +162,8 @@ void loop()
           beep();
     }   
    }
+   delay(3000);
+   lcd.clear();
 }
 
 void beep(){
@@ -124,11 +179,11 @@ void beep(){
 
 void blinkPro(int pin){
   digitalWrite(pin,1);
-  delay(200);
+  delay(100);
   digitalWrite(pin,0);
-  delay(200);
+  delay(100);
   digitalWrite(pin,1);
-  delay(200);
+  delay(100);
   digitalWrite(pin,0);
-  delay(200);
+  delay(100);
 }
