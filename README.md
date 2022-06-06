@@ -83,12 +83,18 @@
   </tr>
   <tr>
     <td>13</td>
+    <td>IPM94</td>
+    <td>Automatic temperature Detector for Entrance</td>
+    <td><a href="#">DEMO</a></td>
+  </tr>
+  <tr>
+    <td>14</td>
     <td>IPC080</td>
     <td>Anti Sleep During Driving</td>
     <td><a href="./IPC080">DEMO</a></td>
   </tr>
   <tr>
-    <td>14</td>
+    <td>15</td>
     <td>
       IPC197<br>
       IPM058
