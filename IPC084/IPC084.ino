@@ -35,6 +35,8 @@ String card9 = "25008A8097B8";
 String card10 = "25008A4C3CDF";
 
 int detect[10] = {3,4,5,6,7,8,9,10,11,12};
+int total = 0;
+int noItem = 5;
 
 int count = 0;                                       
 char input[12];                                     
@@ -89,6 +91,8 @@ void loop()
             lcd.print("Item ID:001");
             lcd.setCursor(0,1);
             lcd.print("Chips Added");
+            total += 10;
+            noItem --;
           }
           else if(card2==input){
             blinkPro(detect[1]);
@@ -96,6 +100,8 @@ void loop()
             lcd.print("Item ID:010");
             lcd.setCursor(0,1);
             lcd.print("ChokiChoki Added");
+            total += 2;
+            noItem --;
           }
           else if(card3==input){
             blinkPro(detect[2]);
@@ -103,6 +109,8 @@ void loop()
             lcd.print("Item ID:011");
             lcd.setCursor(0,1);
             lcd.print("Gone Mad Added");
+            total += 5;
+            noItem --;
           }
           else if(card4==input){
             blinkPro(detect[3]);
@@ -110,6 +118,8 @@ void loop()
             lcd.print("Item ID:100");
             lcd.setCursor(0,1);
             lcd.print("Mixture Added");
+            total += 10;
+            noItem --;
           }
           else if(card5==input){
             blinkPro(detect[4]);
@@ -117,6 +127,8 @@ void loop()
             lcd.print("Item ID:101");
             lcd.setCursor(0,1);
             lcd.print("A4 Papers Added");
+            total += 2;
+            noItem --;
           }
           else if(card6==input){
             blinkPro(detect[5]);
@@ -124,6 +136,8 @@ void loop()
             lcd.print("Item ID:110");
             lcd.setCursor(0,1);
             lcd.print("Bingo Added");
+            total += 10;
+            noItem --;
           }
           else if(card7==input){
             blinkPro(detect[6]);
@@ -161,6 +175,23 @@ void loop()
           Serial.println("Error");   
           beep();
     }   
+   }
+   if(noItem<=0){
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Can't add More");
+      delay(1000);
+      lcd.setCursor(0,0);
+      lcd.print("So, Your Total");
+      lcd.setCursor(0,1);
+      lcd.print("Bill is: ");
+      lcd.setCursor(9,1);
+      lcd.print(total);
+      lcd.setCursor(14,1);
+      lcd.print("rs");
+      delay(2000);
+      total = 0;
+      noItem = 5;
    }
    delay(3000);
    lcd.clear();
