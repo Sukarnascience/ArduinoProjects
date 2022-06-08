@@ -1,81 +1,164 @@
-#include <SoftwareSerial.h>
+/*
+ * Components :
+ * 
+ * DHT11 
+ * data --> 8
+ * 
+ * Buzxer
+ * +ve --> 9
+ * 
+ * Warning Led
+ * +ve --> 10
+ * 
+ * MQ06
+ * D0 --> 11
+ * 
+ * LCD i2c
+ * SDA --> SDA
+ * SCL --> SCL
+ * 
+ * Relay
+ * INPUT --> 12
+ * 
+ * SIM800C
+ * TXD --> 3
+ * RXD --> 2
+ * 
+ */
+
+#include <Wire.h>
+#include <dht.h>
 #include <LiquidCrystal_I2C.h>
-#include "Adafruit_FONA.h"
- 
-#define FONA_RX            2
-#define FONA_TX            3
-#define FONA_RST           4
- 
-#define FONA_RI_INTERRUPT  0
+#include <SoftwareSerial.h>
 
-#define IR 7
-#define buzz 6
-
-float sensorValue;
-float sensorVolts;
+#define mq06 11
+#define buzz 9
+#define wLed 10
+#define rely 12
+#define temp 13
 
 LiquidCrystal_I2C lcd(0x27,16,2);
+SoftwareSerial sim800l(3,2); 
+dht DHT;
 
-char sendto[21] = "9113688393"; // Enter your Mobile Number here. Exclude country code.
-char message[141] = "Hi Device Started"; 
-
-String techtrends;
-SoftwareSerial fonaSS = SoftwareSerial(FONA_TX, FONA_RX);
- 
-Adafruit_FONA fona = Adafruit_FONA(FONA_RST);
- 
-void setup() {  
-
-  pinMode(IR,INPUT);
-  pinMode(buzz,OUTPUT);
-
+void setup(){
   lcd.begin();
-  
   Serial.begin(9600);
-  lcd.setCursor(0,0);
-  lcd.print("Starting the GSM");
-  Serial.println(F("FONA incoming call example"));
-  Serial.println(F("Initializing....(May take 3 seconds)"));
-  delay(5000);
-  fonaSS.begin(4800); // if you're using software serial
-  if (! fona.begin(fonaSS)) {           // can also try fona.begin(Serial1) 
-    Serial.println(F("Couldn't find FONA"));
-    while (1);
-  }
-  Serial.println(F("FONA is OK"));
- 
- fona.print ("AT+CSMP=17,167,0,0\r");
-   fona.sendSMS(sendto, message);
-   delay(1000);
-   lcd.clear();
-   lcd.setCursor(0,0);
-   lcd.print("MQ-6 to warm up");
-   delay(20000);   // allow the MQ-6 to warm up
-   lcd.clear();
-}
- 
-void loop()
-{
-  for(int i = 0; i < 100; i++){ 
-    sensorValue = sensorValue + analogRead(0); // read analog input pin 0 
- } 
- sensorValue = sensorValue / 100; // get average reading 
- sensorVolts = sensorValue/1024*5.0; //convert to voltage 
- if(sensorVolts > 1.4){
-     Serial.println("LPG gas detected!");
-     fona.sendSMS(sendto,"LPG gas leakage detected!");
-     lcd.setCursor(0,1);
-     lcd.print("LPG gas Detected");
- }
+  sim800l.begin(9600);
+  
+  lcd.setCursor(4,0);
+  lcd.print("WELCOME");
+  lcd.setCursor(1,1);
+  lcd.print("to grp. IPC164");
+  Serial.println("Staring...");
 
- if(digitalRead(IR)){
-  Serial.println("Fire");
-  lcd.setCursor(0,1);
-  lcd.print("Fire Detected!");
+  pinMode(mq06,INPUT);
+  pinMode(buzz,OUTPUT);
+  pinMode(wLed,OUTPUT);
+  pinMode(rely,OUTPUT);
+
+  delay(2000);
+  lcd.clear();
+  lcd.setCursor(4,0);
+  lcd.print("Getting ready...");
+  Serial.println("Getting it Ready");
+  func();
+  delay(4000);
+  Serial.println("Started");
+  func();
+  Serial.println();
+  lcd.clear();
+  
+}
+
+void loop(){
+  boolean x = isSmoke();
+  boolean y = isHeat();
+  if(x && !y){
+    lcd.setCursor(0,0);
+    lcd.print(" Everything is: ");
+    lcd.setCursor(0,1);
+    lcd.print("     NORMAL     ");
+    func();
+  }
+   else{
+    lcd.setCursor(0,0);
+    lcd.print(" Fire Detected ");
+    func();
+    sendMsg();
+    beep();
+   }
+
+  delay(5000);
+  lcd.clear();
+}
+
+boolean isSmoke(){
+  Serial.println("MQ06 Sensor Value:");
+  if(digitalRead(mq06)){
+    Serial.println("Smoke Detected");
+    Serial.println();
+    return true;
+  }
+  else{
+    Serial.println("No Smoke Detected");
+    Serial.println();
+    return false;
+  }
+}
+
+boolean isHeat(){
+  int see = DHT.read11(temp);
+  Serial.println("DHT11 Sensor Value:");
+  Serial.print("Temperature :");
+  Serial.println(DHT.temperature);
+  Serial.print("Humidity :");
+  Serial.println(DHT.humidity);
+  Serial.println();
+  if(DHT.temperature > 50 && DHT.humidity < 50){
+    return true;
+  }
+  else{
+    return false;
+  } 
+}
+
+void func(){
+  digitalWrite(wLed,1);
+  delay(255);
+  digitalWrite(wLed,0);
+  delay(255);
+}
+
+void beep(){
   digitalWrite(buzz,1);
- }
- 
- delay(255); 
- digitalWrite(buzz,0);
- lcd.clear();
+  delay(500);
+  digitalWrite(rely,1);
+  delay(2000);
+  digitalWrite(buzz,0);
+  delay(500);
+  digitalWrite(rely,0);
+  delay(500);
+}
+
+void sendMsg(){
+  func();
+  Serial.println("Sending MSG");
+
+  sim800l.print("AT+CMGF=1\r");          
+  delay(100);
+  sim800l.print("AT+CMGS=\"+91xxxxxxxxxx\"\r");  
+  delay(500);
+  sim800l.print("Fire has been Detected in HOUSE... ");    
+  delay(500);
+  sim800l.print((char)26);
+  delay(500);
+  sim800l.println();
+
+  if (sim800l.available()){         
+    Serial.write(sim800l.read()); 
+  }
+  
+  Serial.println("MSG Sended ");
+  func();
 }
