@@ -1,11 +1,3 @@
-/**
- * Group Name : IPM058 + IPC197
- * Another    : Sukarna Jana
- * Title      : Smart Plant Watering System 
- * 
- * Copyright © 2022 Sukarna jana
- */
-
 #include <LiquidCrystal.h>
 
 #define moisture A0
@@ -48,14 +40,14 @@ void loop(){
   Serial.print("Analog Moisture Output: ");
   Serial.println(moisture);
 
-  if (moisture < soilWet) {
+  if ( +(moisture < soilWet)) {
     Serial.println("Status: Soil is too wet");
     lcd.setCursor(0, 0);
     lcd.print("Status: Soil is");
     lcd.setCursor(8, 1);
     lcd.print("too wet");
-    digitalWrite(red,1);
-    digitalWrite(green,0);
+    digitalWrite(red,0);
+    digitalWrite(green,1);
     digitalWrite(pump,1);
     
   } else if (moisture >= soilWet && moisture < soilDry) {
@@ -74,7 +66,7 @@ void loop(){
     lcd.setCursor(8, 1);
     lcd.print("too dry");
     digitalWrite(red,1);
-    digitalWrite(green,1);
+    digitalWrite(green,0);
     digitalWrite(pump,0);
   }
 
