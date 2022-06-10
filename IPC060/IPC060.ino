@@ -5,7 +5,7 @@
 #define rightMA 6   // pin D6 to IN3
 #define rightMU 7   // pin D7 to IN4
 
-/* Data sended by App
+/*Data sended by App
 front = 'a';
 back = 'b';
 left = 'c';
@@ -13,41 +13,55 @@ right = 'd';
 stop = 'e';
 */ 
 
+char data;
+
 void setup(){
 
   pinMode(leftMA,OUTPUT);
   pinMode(leftMU,OUTPUT);
   pinMode(rightMA,OUTPUT);
   pinMode(rightMU,OUTPUT);
-    
+  pinMode(13,OUTPUT);
   delay(2000);
 }
 
 void loop(){
   if(Serial.available()>0){
-    char data = Serial.read();
+    //Serial.println("Ready To Read...");
+    data = Serial.read();
+  }
     switch(data){
       case 'a':
+        //Serial.write("Moving Front");
         moveFront();
+        data = '\0';
         break;
       case 'b':
+        //Serial.write("Moving Back");
         moveBack();
+        data = '\0';
         break;
       case 'c':
+        //Serial.write("Moving Left");
         moveLeft();
+        data = '\0';
         break;
       case 'd':
+        //Serial.write("Moving Right");
         moveRight();
         break;
       case 'e':
+        //Serial.write("Stop Moving");
         stopMove();
+        data = '\0';
         break;
       default:
+        //Serial.write("Stop Moving");
         stopMove();
+        data = '\0';
         break;
     }
-  }
-}
+ }
 
 
 void moveFront(){
